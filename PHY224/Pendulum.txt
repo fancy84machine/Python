@@ -1,0 +1,89 @@
+#http://www.physics.utoronto.ca/~phy225h/python-exercises/Lecture%202_Python_Data_Analysis.pdf
+#http://www.phy.uct.ac.za/courses/python/examples/fitresonance.py
+
+#Importing modules
+from scipy import *
+from scipy.optimize import leastsq
+from numpy import *
+from pylab import *
+
+#Loading experimental data from text file
+datafile = "C:\Users\LS\Desktop\length.txt"
+data=loadtxt(datafile)
+
+#Define constants
+dY = 0.05 #Error of theta
+g = 9.81
+L = 0.346
+om = (g/L)**0.5
+A = 7.0/180*pi
+
+#Define parameters
+#gamma, alpha, w
+#gamma constant taken from calculations in exercise 2
+p0name = "Gamma", "Alpha", "w"
+p0 = 0.0095, -1.5,(om**2-0.0095**2/4)**0.5
+
+#Residuals function
+#Returns the difference between the data point (in this case, the angle) 
+#and the line of best fit
+def residuals(p, time, theta):
+    err = theta - peval (time, p)
+    return err
+
+#peval function
+#Returns the value of the best fit curve
+def peval (time, p):
+    return A*e**(-(p[0]*time)/2)*cos (p[2]*time + p[1])
+
+#Initializing arrays 
+time = arange (0, len (data), 1.0) #input data
+theta = arange (0, len (data), 1.0) #input data
+dY2 = arange (0, len (data), 1.0)
+
+#For loop for storing the input data into the arrays
+for x in range (len (data)):
+
+    #Storing the time of the pendulum into an array from the input data
+    time [x] = data [x][0]
+
+    #Storing the angle of the pendulum into an array from the input data
+    #and converting it to radians
+    theta [x] = (data [x][1] +2)/180*pi
+
+    #Since the error cannot be zero (or else division by zero in error propagation
+    #will cause an error), it must be ascertained that the angle is not zero
+    if theta [x] != 0:
+        dY2 [x] = abs (dY*theta [x]) #Error of period propagated
+    else:
+        dY2 [x] = 0.00000001
+
+#Storing the output of the least squares fit into an array
+p_final, cov_x, info, mesg, success  = leastsq(residuals,p0,args=(time,theta), maxfev = 4000, full_output = 1) #initial guess is just p
+
+#Defining degrees of freedom
+v = len (time) -3.0
+
+#Storing the line of best fit into an array
+y_final = peval (time, p_final)
+
+#Calculating the chi squared
+chi2 = sum ((theta - y_final)**2/dY2)
+
+#If calculating the line of best fit using the least squares function is successful
+if success == 1:
+
+    #Plotting the graph and the fit
+    plot (time, theta, 'ko')
+    plot (time, peval (time, p_final), 'ro-')
+    suptitle('Non-Linear Fit for Damped Pendulum based on Experimental Data')
+    xlabel ('Time (s)')
+    ylabel ('Theta (rad)')
+    errorbar (time, peval (time, p_final), dY2, fmt = 'r+')
+    show ()
+    
+    #Outputting the statistical results
+    print "Goodness of Fit:", chi2 / v
+    print "Values of the parameters with a confidence interval of 68%:"
+    for i in range(len(p_final)):
+        print "%s=%8.3f+/-%.4f" %(p0name [i], p_final[i], sqrt(cov_x[i,i]))
