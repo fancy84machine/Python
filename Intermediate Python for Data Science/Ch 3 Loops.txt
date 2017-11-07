@@ -1,0 +1,31 @@
+#Loop over DataFrame (1)
+# Import cars data
+import pandas as pd
+cars = pd.read_csv('cars.csv', index_col = 0)
+
+# Iterate over rows of cars
+for lab, row in cars.iterrows() :
+    print (lab)
+    print (row)
+
+#Loop over DataFrame (2)
+# Import cars data
+import pandas as pd
+cars = pd.read_csv('cars.csv', index_col = 0)
+
+# Adapt for loop
+for lab, row in cars.iterrows() :
+    print(lab + ": " + str (row ['cars_per_cap']))
+
+
+#Add column (2)
+# Import cars data
+import pandas as pd
+cars = pd.read_csv('cars.csv', index_col = 0)
+
+# Use .apply(str.upper) - don't use the for loop
+#for lab, row in cars.iterrows() :
+#    cars.loc[lab, "COUNTRY"] = row["country"].upper()
+cars ['COUNTRY'] = cars ['country'].apply (str.upper)
+
+print (cars)
