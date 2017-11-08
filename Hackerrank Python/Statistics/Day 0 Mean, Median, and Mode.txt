@@ -1,0 +1,10 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+import numpy
+from scipy import stats
+
+n = raw_input ()
+arr = numpy.array (raw_input ().split (), int)
+
+print numpy.median (arr)
+print numpy.mean (arr, dtype = numpy.float32)
+print int (stats.mode (arr) [0])

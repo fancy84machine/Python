@@ -1,0 +1,14 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+
+n = int (raw_input ())
+arr1 = list( map (int, raw_input ().split ()) )
+arr2 = list( map (int, raw_input ().split ()) )
+topsum = 0
+bottomsum = 0
+
+for x in range (0, n):
+    topsum = topsum + arr1[x]*arr2[x]
+    bottomsum = bottomsum + arr2[x]
+
+print (round (1.0*topsum/bottomsum, 1))

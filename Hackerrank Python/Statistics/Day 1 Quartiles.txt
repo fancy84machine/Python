@@ -1,0 +1,28 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUTimport numpy 
+def median(lst):
+    sortedLst = sorted(lst)
+    lstLen = len(lst)
+    index = (lstLen - 1) // 2
+
+    if (lstLen % 2):
+        return sortedLst[index]
+    else:
+        return (sortedLst[index] + sortedLst[index + 1])/2
+    
+    
+n = int (raw_input ())
+arr = list(map( int, raw_input().split ()))
+
+arr.sort ()
+
+if n%2 == 0:
+    arr1 = arr [0: n/2 ]
+    arr3 = arr [n/2: n]
+else:
+    arr1 = arr [0: n/2 ]
+    arr3 = arr [n/2 +1: n]
+    
+
+print median (arr1)
+print median (arr)
+print median (arr3)

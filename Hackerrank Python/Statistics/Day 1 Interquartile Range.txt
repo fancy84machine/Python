@@ -1,0 +1,39 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+def median(lst):
+    sortedLst = sorted(lst)
+    lstLen = len(lst)
+    index = (lstLen - 1) // 2
+
+    if (lstLen % 2):
+        return sortedLst[index]*1.0
+    else:
+        return (sortedLst[index] + sortedLst[index + 1])/2.0
+    
+    
+n = int (raw_input ())
+element = list( map (int, raw_input ().split ()) )
+freq = list( map (int, raw_input ().split ()) )
+
+lst =[]
+for x in range (0, n):
+    for y in range (0, freq [x]):
+        lst.extend ([element [x]])
+        
+
+        
+lst.sort ()
+size = len (lst)
+
+
+if size %2 == 0:
+    arr1 = lst [0: size/2 ]
+    arr3 = lst [size/2: size]
+else:
+    arr1 = lst [0: size/2 ]
+    arr3 = lst [size/2 +1: size]
+    
+
+#print median (arr1) 
+#print median (lst)
+#print median (arr3)
+print median (arr3) -  median (arr1)

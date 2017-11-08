@@ -1,0 +1,21 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+import math
+
+def mean (lst):
+    total = 0
+    for x in range (0, len (lst)):
+        total = total + lst [x]
+    return total/len (lst)*1.0
+
+n = int (raw_input ())
+lst = list (map (int, raw_input().split () ))
+
+top = 0.0
+
+
+for x in range (0, len (lst)):
+    top = top + (lst [x]- mean (lst))**2
+    
+#answer = math.sqrt (top/ n*1.0)
+
+print math.sqrt (top/ n*1.0)
